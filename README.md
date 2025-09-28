@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet">
 <title>amyr hack - Главная страница</title>
 
 <style>
@@ -22,6 +23,9 @@
     --text-light: #ffffff;
     --text-gray: #cccccc;
     --border-color: rgba(0, 255, 255, 0.2);
+    --matrix-green: #00ff41;
+    --neon-pink: #ff006f;
+    --cyber-blue: #00f5ff;
 }
 
 * {
@@ -31,11 +35,118 @@
 }
 
 body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: linear-gradient(135deg, var(--dark-bg) 0%, var(--darker-bg) 100%);
+    font-family: 'Orbitron', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--dark-bg);
     color: var(--text-light);
     line-height: 1.6;
     overflow-x: hidden;
+    cursor: none;
+}
+
+/* Custom Cursor */
+.cursor {
+    position: fixed;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--primary-color);
+    border-radius: 50%;
+    background: rgba(0, 255, 255, 0.1);
+    pointer-events: none;
+    z-index: 9999;
+    mix-blend-mode: difference;
+    transition: transform 0.1s ease;
+}
+
+.cursor-trail {
+    position: fixed;
+    width: 8px;
+    height: 8px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0.7;
+}
+
+/* Matrix Rain Background */
+#matrix-canvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2;
+    opacity: 0.1;
+}
+
+/* Particles Background */
+#particles-js {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+}
+
+/* Glitch Effect */
+@keyframes glitch {
+    0% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+    100% { transform: translate(0); }
+}
+
+@keyframes glitch-color {
+    0% { 
+        text-shadow: 0.05em 0 0 #ff006f, -0.05em -0.025em 0 #00f5ff, 0.025em 0.05em 0 #ffff00;
+    }
+    15% { 
+        text-shadow: 0.05em 0 0 #00f5ff, -0.05em -0.025em 0 #ff006f, 0.025em 0.05em 0 #ffff00;
+    }
+    49% { 
+        text-shadow: 0.05em 0 0 #ffff00, -0.05em -0.025em 0 #ff006f, 0.025em 0.05em 0 #00f5ff;
+    }
+    50% { 
+        text-shadow: 0.05em 0 0 #ff006f, -0.05em -0.025em 0 #ffff00, 0.025em 0.05em 0 #00f5ff;
+    }
+    99% { 
+        text-shadow: 0.05em 0 0 #00f5ff, -0.05em -0.025em 0 #ff006f, 0.025em 0.05em 0 #ffff00;
+    }
+    100% { 
+        text-shadow: 0.05em 0 0 #ff006f, -0.05em -0.025em 0 #00f5ff, 0.025em 0.05em 0 #ffff00;
+    }
+}
+
+.glitch-text {
+    animation: glitch 0.3s, glitch-color 0.1s;
+    animation-iteration-count: infinite;
+    animation-timing-function: linear;
+    animation-direction: alternate-reverse;
+}
+
+/* Neon Glow Effects */
+@keyframes neon-glow {
+    0%, 100% {
+        text-shadow: 
+            0 0 5px var(--primary-color),
+            0 0 10px var(--primary-color),
+            0 0 15px var(--primary-color),
+            0 0 20px var(--primary-color);
+    }
+    50% {
+        text-shadow: 
+            0 0 2px var(--primary-color),
+            0 0 5px var(--primary-color),
+            0 0 8px var(--primary-color),
+            0 0 12px var(--primary-color);
+    }
+}
+
+.neon-text {
+    animation: neon-glow 2s ease-in-out infinite alternate;
 }
 
 /* Header */
@@ -55,7 +166,7 @@ body {
     display: flex;
     align-items: center;
     font-size: 28px;
-    font-weight: 800;
+    font-weight: 900;
     color: var(--primary-color) !important;
     text-decoration: none;
     text-transform: uppercase;
@@ -94,6 +205,7 @@ body {
 .nav-link.active {
     color: var(--primary-color) !important;
     transform: translateY(-2px);
+    text-shadow: 0 0 10px var(--primary-color);
 }
 
 .nav-link::after {
@@ -110,6 +222,7 @@ body {
 
 .nav-link:hover::after {
     width: 100%;
+    box-shadow: 0 0 10px var(--primary-color);
 }
 
 /* Main sections */
@@ -121,7 +234,6 @@ main {
     min-height: 100vh;
     display: flex;
     align-items: center;
-    background: linear-gradient(135deg, var(--dark-bg) 0%, var(--darker-bg) 100%);
     position: relative;
     overflow: hidden;
 }
@@ -156,6 +268,7 @@ main {
     margin-bottom: 50px;
     max-width: 650px;
     line-height: 1.8;
+    font-family: 'JetBrains Mono', monospace;
 }
 
 .header_btn {
@@ -182,11 +295,72 @@ main {
     background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
     color: var(--dark-bg) !important;
     box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3);
+    position: relative;
+}
+
+.download-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.download-btn:hover::before {
+    left: 100%;
 }
 
 .download-btn:hover {
     transform: translateY(-3px);
     box-shadow: 0 15px 40px rgba(0, 255, 255, 0.5);
+}
+
+.private-btn {
+    background: linear-gradient(45deg, var(--accent-color), var(--neon-pink));
+    color: var(--text-light) !important;
+    box-shadow: 0 10px 30px rgba(255, 0, 128, 0.4);
+    position: relative;
+    border: 1px solid var(--accent-color);
+}
+
+.private-btn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+    transition: left 0.5s;
+}
+
+.private-btn:hover::before {
+    left: 100%;
+}
+
+.private-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(255, 0, 128, 0.6);
+    border-color: var(--neon-pink);
+}
+
+.private-btn::after {
+    content: '👑';
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    font-size: 14px;
+    background: var(--accent-color);
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 10px rgba(255, 0, 128, 0.5);
 }
 
 .header_btn a:nth-child(2) {
@@ -199,6 +373,7 @@ main {
     background: var(--primary-color);
     color: var(--dark-bg) !important;
     transform: translateY(-3px);
+    box-shadow: 0 15px 40px rgba(0, 255, 255, 0.3);
 }
 
 /* Sections */
@@ -300,6 +475,7 @@ section {
     color: var(--text-gray);
     line-height: 1.8;
     font-size: 1.1rem;
+    font-family: 'JetBrains Mono', monospace;
 }
 
 /* Functionality cards */
@@ -399,6 +575,7 @@ section {
 .footer_block_1_text_2 {
     color: var(--text-gray);
     font-size: 1rem;
+    font-family: 'JetBrains Mono', monospace;
 }
 
 .footer_block_1_text_2 a {
@@ -409,6 +586,7 @@ section {
 
 .footer_block_1_text_2 a:hover {
     text-decoration: underline;
+    text-shadow: 0 0 10px var(--primary-color);
 }
 
 .footer_block_social {
@@ -468,39 +646,14 @@ section {
     box-shadow: 0 15px 40px rgba(0, 255, 255, 0.5);
 }
 
-/* Modal */
-.modal-content {
-    background: var(--card-bg);
-    border: 2px solid var(--primary-color);
-    border-radius: 20px;
-}
-
-.modal-header {
-    border-bottom: 2px solid var(--border-color);
-    padding: 25px 30px;
-}
-
-.modal-title {
-    color: var(--text-light);
-    font-weight: 700;
-    font-size: 1.5rem;
-}
-
-.close {
-    color: var(--text-light);
-    opacity: 0.8;
-    font-size: 2rem;
-}
-
-.close:hover {
-    color: var(--primary-color);
-    opacity: 1;
-}
-
 /* Responsive */
 @media (max-width: 768px) {
+    body { cursor: auto; }
+    .cursor, .cursor-trail { display: none; }
+    
     .header_title {
         font-size: 2.8rem;
+        line-height: 1.2;
     }
     
     .container_title_bot {
@@ -538,19 +691,15 @@ section {
     .social_card {
         padding: 30px;
     }
-}
-
-/* Animations */
-.animate__fadeInUp {
-    animation-duration: 0.8s;
-}
-
-.animate__fadeInLeft {
-    animation-duration: 0.8s;
-}
-
-.animate__fadeInRight {
-    animation-duration: 0.8s;
+    
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+    
+    .footer_block_1_text_2 {
+        word-break: break-word;
+    }
 }
 
 /* Custom scrollbar */
@@ -573,13 +722,22 @@ section {
 </style>
 </head>
 <body>
+    <!-- Custom Cursor -->
+    <div class="cursor" id="cursor"></div>
+
+    <!-- Matrix Background -->
+    <canvas id="matrix-canvas"></canvas>
+    
+    <!-- Particles Background -->
+    <div id="particles-js"></div>
+
     <a href="#main" id="back-to-top" class="back-to-top" title="Наверх">▲</a>
     
     <div id="header" class="animate__animated animate__fadeInDown">
         <div class="container">
             <div class="row">
                 <nav class="navbar navbar-expand-md bg-transparent w-100">
-                    <a class="navbar-brand" href="#main">
+                    <a class="navbar-brand neon-text" href="#main">
                         <div class="header__logo-img">
                             <i class="fas fa-code"></i>
                         </div>
@@ -612,14 +770,15 @@ section {
                         <!-- Место для изображения или графики -->
                     </div>
                     <div class="col-12 col-md-6">
-                        <div class="header_title animate__animated animate__fadeInUp">
+                        <div class="header_title glitch-text animate__animated animate__fadeInUp">
                             AMYR HACK<br>Лучшее Решение
                         </div>
                         <div class="header_text animate__animated animate__fadeInUp">
                             Представляем уникальный продукт с широким функционалом и легкой настройкой, а также быстрой и отзывчивой техподдержкой. Получите преимущество в игре уже сегодня.
                         </div>
                         <div class="header_btn">
-                            <a href="#" class="download-btn animate__animated animate__fadeInLeft">СКАЧАТЬ</a>
+                            <a href="https://t.me/amyr_software/58" target="_blank" class="download-btn animate__animated animate__fadeInLeft">СКАЧАТЬ</a>
+                            <a href="https://t.me/amyr_software/45" target="_blank" class="private-btn animate__animated animate__fadeInUp">ПОЛУЧИТЬ ПРИВАТНУЮ ВЕРСИЮ</a>
                             <a href="#advantages" class="animate__animated animate__fadeInRight">УЗНАТЬ БОЛЬШЕ</a>
                         </div>
                     </div>
@@ -630,8 +789,8 @@ section {
         <section id="advantages">
             <div class="container">
                 <div class="container-title animate__animated animate__fadeInUp">
-                    <div class="container_title_top">НАШИ</div>
-                    <div class="container_title_bot">ПРЕИМУЩЕСТВА</div>
+                    <div class="container_title_top neon-text">НАШИ</div>
+                    <div class="container_title_bot glitch-text">ПРЕИМУЩЕСТВА</div>
                 </div>
                 
                 <div class="row">
@@ -675,8 +834,8 @@ section {
         <section id="instruction">
             <div class="container">
                 <div class="container-title animate__animated animate__fadeInUp">
-                    <div class="container_title_top">КРАТКАЯ</div>
-                    <div class="container_title_bot">ИНСТРУКЦИЯ</div>
+                    <div class="container_title_top neon-text">КРАТКАЯ</div>
+                    <div class="container_title_bot glitch-text">ИНСТРУКЦИЯ</div>
                 </div>
                 
                 <div class="row">
@@ -720,8 +879,8 @@ section {
         <section id="functionality">
             <div class="container">
                 <div class="container-title animate__animated animate__fadeInUp">
-                    <div class="container_title_top">ФУНКЦИОНАЛ</div>
-                    <div class="container_title_bot">ПРОДУКТА</div>
+                    <div class="container_title_top neon-text">ФУНКЦИОНАЛ</div>
+                    <div class="container_title_bot glitch-text">ПРОДУКТА</div>
                 </div>
                 
                 <div class="row">
@@ -730,7 +889,7 @@ section {
                             <div class="functionality_placeholder">
                                 ESP Vision
                             </div>
-                            <div class="functionality_text">ESP</div>
+                            <div class="functionality_text neon-text">ESP</div>
                         </div>
                     </div>
                     <div class="col-12 col-md-6 col-lg-4">
@@ -738,7 +897,7 @@ section {
                             <div class="functionality_placeholder">
                                 Auto Aim
                             </div>
-                            <div class="functionality_text">AIMBOT</div>
+                            <div class="functionality_text neon-text">AIMBOT</div>
                         </div>
                     </div>
                     <div class="col-12 col-md-6 col-lg-4">
@@ -746,7 +905,7 @@ section {
                             <div class="functionality_placeholder">
                                 Movement
                             </div>
-                            <div class="functionality_text">BUNNY HOP</div>
+                            <div class="functionality_text neon-text">BUNNY HOP</div>
                         </div>
                     </div>
                 </div>
@@ -756,21 +915,21 @@ section {
         <section id="social">
             <div class="container">
                 <div class="container-title animate__animated animate__fadeInUp">
-                    <div class="container_title_top">НАШИ</div>
-                    <div class="container_title_bot">КОНТАКТЫ</div>
+                    <div class="container_title_top neon-text">НАШИ</div>
+                    <div class="container_title_bot glitch-text">КОНТАКТЫ</div>
                 </div>
                 
                 <div class="row justify-content-center">
                     <div class="col-12 col-md-6 col-lg-4">
                         <div class="social_card animate__animated animate__fadeInUp">
-                            <a href="#" aria-label="Телеграм"><i class="fab fa-telegram-plane"></i></a>
-                            <div class="social_text">Телеграм</div>
+                            <a href="https://t.me/amyr_software" target="_blank" aria-label="Наш канал"><i class="fab fa-telegram-plane"></i></a>
+                            <div class="social_text neon-text">НАШ КАНАЛ</div>
                         </div>
                     </div>
                     <div class="col-12 col-md-6 col-lg-4">
                         <div class="social_card animate__animated animate__fadeInUp">
-                            <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
-                            <div class="social_text">Discord</div>
+                            <a href="https://t.me/Amyr_shik" target="_blank" aria-label="Тех поддержка"><i class="fas fa-headset"></i></a>
+                            <div class="social_text neon-text">ПОДДЕРЖКА</div>
                         </div>
                     </div>
                 </div>
@@ -783,15 +942,16 @@ section {
             <div class="row">
                 <div class="col-12 col-md-4 mb-4">
                     <div class="footer_block">
-                        <div class="footer_block_1_text_1">AMYR HACK © 2020-2025</div>
+                        <div class="footer_block_1_text_1 neon-text">AMYR HACK © 2025</div>
                         <div class="footer_block_1_text_2">Все права защищены!</div>
                     </div>
                 </div>
                 <div class="col-12 col-md-4 mb-4">
                     <div class="footer_block">
-                        <div class="footer_block_1_text_1">Документация:</div>
+                        <div class="footer_block_1_text_1">Связь с нами:</div>
                         <div class="footer_block_1_text_2">
-                            <a href="#">Пользовательское соглашение</a>
+                            <a href="https://t.me/amyr_software" target="_blank">Наш канал</a><br>
+                            <a href="https://t.me/Amyr_shik" target="_blank">Поддержка</a>
                         </div>
                     </div>
                 </div>
@@ -799,9 +959,8 @@ section {
                     <div class="footer_block">
                         <div class="footer_block_1_text_1">Социальные сети:</div>
                         <div class="footer_block_social">
-                            <a href="#" aria-label="Телеграм"><i class="fab fa-telegram-plane"></i></a>
-                            <a href="#" aria-label="Discord"><i class="fab fa-discord"></i></a>
-                            <a href="#" aria-label="Email"><i class="fas fa-envelope"></i></a>
+                            <a href="https://t.me/amyr_software" target="_blank" aria-label="Наш канал"><i class="fab fa-telegram-plane"></i></a>
+                            <a href="https://t.me/Amyr_shik" target="_blank" aria-label="Поддержка"><i class="fas fa-headset"></i></a>
                         </div>
                     </div>
                 </div>
@@ -809,27 +968,146 @@ section {
         </div>
     </footer>
 
-    <!-- Modal -->
-    <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="imageModalLabel">Изображение</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <img id="modalImage" src="" alt="" class="img-fluid">
-                </div>
-            </div>
-        </div>
-    </div>
-
+    <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     
     <script>
+        // Custom Cursor
+        const cursor = document.getElementById('cursor');
+        const trails = [];
+        const trailLength = 5;
+
+        // Create cursor trails
+        for (let i = 0; i < trailLength; i++) {
+            const trail = document.createElement('div');
+            trail.className = 'cursor-trail';
+            document.body.appendChild(trail);
+            trails.push(trail);
+        }
+
+        let mouseX = 0, mouseY = 0;
+        let currentX = 0, currentY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function updateCursor() {
+            currentX += (mouseX - currentX) * 0.1;
+            currentY += (mouseY - currentY) * 0.1;
+            
+            cursor.style.left = currentX + 'px';
+            cursor.style.top = currentY + 'px';
+
+            // Update trails
+            trails.forEach((trail, index) => {
+                setTimeout(() => {
+                    trail.style.left = currentX + 'px';
+                    trail.style.top = currentY + 'px';
+                    trail.style.opacity = (trailLength - index) / trailLength * 0.7;
+                }, index * 50);
+            });
+
+            requestAnimationFrame(updateCursor);
+        }
+        updateCursor();
+
+        // Matrix Rain Effect
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const matrix = "АМУR0123456789АБВГДЕЖЗИЙКЛМНОПРСТУФХЦЧШЩЫЭЮЯabcdefghijklmnopqrstuvwxyz";
+        const matrixArray = matrix.split("");
+
+        const fontSize = 10;
+        const columns = canvas.width / fontSize;
+
+        const drops = [];
+        for (let x = 0; x < columns; x++) {
+            drops[x] = 1;
+        }
+
+        function drawMatrix() {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.04)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#00ff41';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < drops.length; i++) {
+                const text = matrixArray[Math.floor(Math.random() * matrixArray.length)];
+                ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+
+                if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    drops[i] = 0;
+                }
+                drops[i]++;
+            }
+        }
+
+        setInterval(drawMatrix, 35);
+
+        // Particles.js Configuration
+        particlesJS('particles-js', {
+            particles: {
+                number: { value: 80, density: { enable: true, value_area: 800 }},
+                color: { value: "#00ffff" },
+                shape: {
+                    type: "circle",
+                    stroke: { width: 0, color: "#000000" }
+                },
+                opacity: {
+                    value: 0.5,
+                    random: false,
+                    anim: { enable: false }
+                },
+                size: {
+                    value: 3,
+                    random: true,
+                    anim: { enable: false }
+                },
+                line_linked: {
+                    enable: true,
+                    distance: 150,
+                    color: "#00ffff",
+                    opacity: 0.4,
+                    width: 1
+                },
+                move: {
+                    enable: true,
+                    speed: 2,
+                    direction: "none",
+                    random: false,
+                    straight: false,
+                    out_mode: "out",
+                    bounce: false,
+                    attract: { enable: false }
+                }
+            },
+            interactivity: {
+                detect_on: "canvas",
+                events: {
+                    onhover: { enable: true, mode: "repulse" },
+                    onclick: { enable: true, mode: "push" },
+                    resize: true
+                },
+                modes: {
+                    grab: { distance: 400, line_linked: { opacity: 1 }},
+                    bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 },
+                    repulse: { distance: 200, duration: 0.4 },
+                    push: { particles_nb: 4 },
+                    remove: { particles_nb: 2 }
+                }
+            },
+            retina_detect: true
+        });
+
         // Smooth scrolling for navigation
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
@@ -892,23 +1170,6 @@ section {
             }
         });
 
-        // Download button functionality with improved UX
-        document.querySelector('.download-btn').addEventListener('click', function(e) {
-            e.preventDefault();
-            
-            // Show loading state
-            const originalText = this.textContent;
-            this.textContent = 'ЗАГРУЗКА...';
-            this.style.pointerEvents = 'none';
-            
-            // Simulate download process
-            setTimeout(() => {
-                alert('Функция скачивания будет доступна в ближайшее время!');
-                this.textContent = originalText;
-                this.style.pointerEvents = 'auto';
-            }, 1500);
-        });
-
         // Intersection Observer for animations
         const observerOptions = {
             threshold: 0.1,
@@ -919,7 +1180,6 @@ section {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('animate__animated', 'animate__fadeInUp');
-                    // Unobserve after animation to improve performance
                     observer.unobserve(entry.target);
                 }
             });
@@ -929,32 +1189,6 @@ section {
         document.addEventListener('DOMContentLoaded', function() {
             const animatedElements = document.querySelectorAll('.advantage-card, .functionality_card, .social_card');
             animatedElements.forEach(el => observer.observe(el));
-        });
-
-        // Modal functionality (if needed for future images)
-        function openModal(imageSrc, altText = 'Изображение') {
-            const modal = document.getElementById('imageModal');
-            const modalImage = document.getElementById('modalImage');
-            modalImage.src = imageSrc;
-            modalImage.alt = altText;
-            $('#imageModal').modal('show');
-        }
-
-        // Social links functionality (placeholder)
-        document.querySelectorAll('.social_card a, .footer_block_social a').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                const platform = this.querySelector('i').classList.contains('fa-telegram-plane') ? 'Telegram' : 
-                               this.querySelector('i').classList.contains('fa-discord') ? 'Discord' : 'Email';
-                alert(`Ссылка на ${platform} будет добавлена в ближайшее время!`);
-            });
-        });
-
-        // Keyboard navigation support
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                $('#imageModal').modal('hide');
-            }
         });
 
         // Performance optimization: Debounced scroll handler
@@ -970,21 +1204,52 @@ section {
             };
         }
 
+        // Glitch effect trigger on hover
+        document.querySelectorAll('.glitch-text').forEach(element => {
+            element.addEventListener('mouseenter', function() {
+                this.style.animationDuration = '0.1s';
+            });
+            
+            element.addEventListener('mouseleave', function() {
+                this.style.animationDuration = '2s';
+            });
+        });
+
+        // Random glitch effect
+        setInterval(() => {
+            const glitchElements = document.querySelectorAll('.glitch-text');
+            const randomElement = glitchElements[Math.floor(Math.random() * glitchElements.length)];
+            if (randomElement) {
+                randomElement.style.animationDuration = '0.1s';
+                setTimeout(() => {
+                    randomElement.style.animationDuration = '2s';
+                }, 200);
+            }
+        }, 5000);
+
+        // Dynamic color changes for neon elements
+        setInterval(() => {
+            const neonElements = document.querySelectorAll('.neon-text');
+            const colors = ['#00ffff', '#ff006f', '#00ff41', '#ffff00', '#ff4500'];
+            const randomColor = colors[Math.floor(Math.random() * colors.length)];
+            
+            neonElements.forEach(el => {
+                el.style.setProperty('--primary-color', randomColor);
+            });
+        }, 8000);
+
+        // Resize handling
+        window.addEventListener('resize', function() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
         // Apply debouncing to scroll events
         const debouncedScrollHandler = debounce(() => {
-            // Custom scroll animations can be added here
+            // Additional scroll animations can be added here
         }, 10);
 
         window.addEventListener('scroll', debouncedScrollHandler);
-
-        // Add loading animation to page
-        window.addEventListener('load', function() {
-            document.body.style.opacity = '1';
-            document.body.style.transition = 'opacity 0.5s ease-in-out';
-        });
-
-        // Initialize page with loading state
-        document.body.style.opacity = '0';
     </script>
 </body>
 </html>
